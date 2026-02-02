@@ -36,6 +36,7 @@ dependencies = [
   "torchaudio",
   "torchvision",
   "pandas>=2.2",
+  "transformers==4.49.0",
   "reportlab>=4.4.3",
   "streamlit>=1.37",
   "streamlit-aggrid>=1.0.2",
