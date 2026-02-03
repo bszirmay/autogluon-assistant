@@ -39,7 +39,7 @@ class ChatLLMFactory:
 
     @classmethod
     def get_valid_providers(cls):
-        return ["azure", "openai", "bedrock", "anthropic", "sagemaker"]
+        return ["azure", "openai", "openai_portkey", "bedrock", "anthropic", "sagemaker"]
 
     @classmethod
     def get_chat_model(cls, config: DictConfig, session_name: str) -> Union[
