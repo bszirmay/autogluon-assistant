@@ -9,6 +9,7 @@ from .azure_openai_chat import AssistantAzureChatOpenAI, create_azure_openai_cha
 from .base_chat import GlobalTokenTracker
 from .bedrock_chat import AssistantChatBedrock, create_bedrock_chat, get_bedrock_models
 from .openai_chat import AssistantChatOpenAI, create_openai_chat, get_openai_models
+from .portkey_chat import AssistantPortKeyChatOpenAI, create_portkey_openai_chat
 from .sagemaker_chat import SagemakerEndpointChat, create_sagemaker_chat, get_sagemaker_endpoints
 
 logger = logging.getLogger(__name__)
@@ -27,6 +28,8 @@ class ChatLLMFactory:
         if provider == "azure":
             return get_azure_models()
         elif provider == "openai":
+            return get_openai_models()
+        elif provider in ("openai_portkey"):
             return get_openai_models()
         elif provider == "bedrock":
             return get_bedrock_models()
@@ -47,6 +50,7 @@ class ChatLLMFactory:
         AssistantAzureChatOpenAI,
         AssistantChatBedrock,
         AssistantChatAnthropic,
+        AssistantPortKeyChatOpenAI,
         SagemakerEndpointChat,
     ]:
         """Get a configured chat model instance using LangGraph patterns."""
@@ -57,7 +61,7 @@ class ChatLLMFactory:
         if provider not in valid_providers:
             raise ValueError(f"Invalid provider: {provider}. Must be one of {valid_providers}")
 
-        if provider != "sagemaker":
+        if provider != "sagemaker" and not provider.endswith("_portkey"):
             valid_models = cls.get_valid_models(provider)
             if model not in valid_models:
                 if model[3:] not in valid_models:  # TODO: better logic for cross region inference
@@ -69,6 +73,8 @@ class ChatLLMFactory:
             return create_openai_chat(config, session_name)
         elif provider == "azure":
             return create_azure_openai_chat(config, session_name)
+        elif provider in ("openai_portkey"):
+            return create_portkey_openai_chat(config, session_name)
         elif provider == "anthropic":
             return create_anthropic_chat(config, session_name)
         elif provider == "bedrock":

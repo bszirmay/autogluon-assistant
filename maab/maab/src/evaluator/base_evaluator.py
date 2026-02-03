@@ -101,7 +101,7 @@ class BaseEvaluator(ABC):
             "dataset_name": metadata["dataset_name"],
             "problem_type": metadata["problem_type"],
             "metric_name": metadata["metric_name"],
-            "metric_value": score
+            "metric_value": score,
         }
         new_row_df = pd.DataFrame([new_row])
 
@@ -128,9 +128,9 @@ class BaseEvaluator(ABC):
                             results_df = pd.read_csv(results_path)
                         else:
                             # Create new DataFrame with the right columns
-                            results_df = pd.DataFrame(columns=[
-                                "agent_name", "dataset_name", "problem_type", "metric_name", "metric_value"
-                            ])
+                            results_df = pd.DataFrame(
+                                columns=["agent_name", "dataset_name", "problem_type", "metric_name", "metric_value"]
+                            )
 
                         # Append new row and write back to file
                         results_df = pd.concat([results_df, new_row_df], ignore_index=True)
